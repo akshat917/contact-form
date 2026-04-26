@@ -1,22 +1,31 @@
-document.getElementById("contactForm").addEventListener("submit", function(e) {
-    e.preventDefault();
+document.addEventListener("DOMContentLoaded", function () {
 
-    const data = {
-        name: document.getElementById("name").value,
-        email: document.getElementById("email").value,
-        message: document.getElementById("message").value
-    };
+    const form = document.getElementById("contactForm");
 
-    fetch("/submit", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-    })
-    .then(res => res.json())
-    .then(data => {
-        document.getElementById("formMessage").innerText = data.message;
-        document.getElementById("contactForm").reset();
+    form.addEventListener("submit", function(e) {
+        e.preventDefault();
+
+        const data = {
+            name: document.getElementById("name").value,
+            email: document.getElementById("email").value,
+            message: document.getElementById("message").value
+        };
+
+        fetch("/submit", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+        .then(res => res.json())
+        .then(response => {
+            document.getElementById("formMessage").innerText = response.message;
+            form.reset();
+        })
+        .catch(error => {
+            document.getElementById("formMessage").innerText = "Error sending message";
+        });
     });
+
 });
