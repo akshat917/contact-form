@@ -20,7 +20,7 @@ def home():
 def submit():
     data = request.get_json()
 
-    supabase.table("contacts").insert({
+    supabase.table("contact-db").insert({
         "name": data["name"],
         "email": data["email"],
         "message": data["message"]
