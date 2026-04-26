@@ -1,24 +1,13 @@
 from flask import Flask, render_template, request, jsonify
-import sqlite3
+from supabase import create_client
+import os
 
 app = Flask(__name__)
 
-# Create DB if not exists
-def init_db():
-    conn = sqlite3.connect("database.db")
-    cursor = conn.cursor()
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS contacts (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT,
-            email TEXT,
-            message TEXT
-        )
-    """)
-    conn.commit()
-    conn.close()
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 
-init_db()
+supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 @app.route('/')
 def home():
@@ -28,20 +17,13 @@ def home():
 def submit():
     data = request.get_json()
 
-    name = data.get("name")
-    email = data.get("email")
-    message = data.get("message")
+    supabase.table("contacts").insert({
+        "name": data["name"],
+        "email": data["email"],
+        "message": data["message"]
+    }).execute()
 
-    conn = sqlite3.connect("database.db")
-    cursor = conn.cursor()
-    cursor.execute(
-        "INSERT INTO contacts (name, email, message) VALUES (?, ?, ?)",
-        (name, email, message)
-    )
-    conn.commit()
-    conn.close()
-
-    return jsonify({"message": "Message saved successfully!"})
+    return jsonify({"message": "Saved successfully!"})
 
 if __name__ == "__main__":
     app.run()
