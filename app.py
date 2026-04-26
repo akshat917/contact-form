@@ -2,6 +2,9 @@ from flask import Flask, render_template, request, jsonify
 from supabase import create_client
 import os
 
+print("DEBUG URL:", os.getenv("SUPABASE_URL"))
+print("DEBUG KEY:", os.getenv("SUPABASE_KEY"))
+
 app = Flask(__name__)
 
 SUPABASE_URL = os.getenv("https://mfmzzcxponmcwtpytwev.supabase.co")
