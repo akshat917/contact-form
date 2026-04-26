@@ -4,7 +4,7 @@ import os
 
 app = Flask(__name__)
 
-SUPABASE_URL = os.getenv("mfmzzcxponmcwtpytwev")
+SUPABASE_URL = os.getenv("https://mfmzzcxponmcwtpytwev.supabase.co")
 SUPABASE_KEY = os.getenv("sb_publishable_YHz1BALbmb_81__-sifNwA_YR6q2TL7")
 
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
