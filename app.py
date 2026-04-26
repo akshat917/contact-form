@@ -25,5 +25,3 @@ def submit():
 
     return jsonify({"message": "Saved successfully!"})
 
-if __name__ == "__main__":
-    app.run()
